@@ -1,0 +1,25 @@
+.indicator {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: black;
+}
+
+.indicator img {
+  margin-bottom: 1rem;
+  width: 5%;
+}
+
+.indicator span {
+  font-family: inter;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.main_page {
+  font-family: inter;
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: blue;
+}

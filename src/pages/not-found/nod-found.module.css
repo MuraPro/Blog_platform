@@ -1,0 +1,30 @@
+.warning {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.warning h2 {
+  font-family: inter;
+  font-size: 22px;
+  line-height: 28px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.warning p {
+  font-family: inter;
+  font-size: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.notfound_link {
+  font-family: inter;
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: blue;
+}
+
+.warning img {
+  width: 50%;
+}
