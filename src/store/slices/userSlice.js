@@ -1,4 +1,3 @@
-/* eslint-disable */
 /* eslint-disable no-param-reassign,arrow-body-style */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
@@ -102,19 +101,19 @@ const userSlice = createSlice({
   initialState: {
     username: '',
     email: '',
-    bio: '',
     image: '',
     offset: 0,
     userRequestStatus: null,
     errorUserServer: null,
     userIsEdit: false,
+    isLogged: null,
   },
   reducers: {
     logOut(state) {
       deleteCookie('token');
+      sessionStorage.removeItem('auth');
       state.username = '';
       state.email = '';
-      state.bio = '';
       state.image = '';
       state.userRequestStatus = '';
       state.offset = 0;
@@ -150,20 +149,16 @@ const userSlice = createSlice({
         state.userRequestStatus = 'fulfilled';
         state.username = action.payload.user.username;
         state.email = action.payload.user.email;
-        state.bio = action.payload.user.bio;
         state.image = action.payload.user.image;
         document.cookie = `token = ${action.payload.user.token}`;
+        sessionStorage.setItem('auth', action.payload.user.token);
         state.userIsEdit = true;
       })
       .addCase(fetchCreateUser.fulfilled, (state) => {
         state.userRequestStatus = 'fulfilled';
         state.userIsEdit = true;
       })
-      .addCase(fetchUpdateUserProfile.fulfilled, (state, action) => {
-        state.username = action.payload.user.username;
-        state.email = action.payload.user.email;
-        state.bio = action.payload.user.bio;
-        state.image = action.payload.user.image;
+      .addCase(fetchUpdateUserProfile.fulfilled, (state) => {
         state.userRequestStatus = 'fulfilled';
         state.userIsEdit = true;
       })

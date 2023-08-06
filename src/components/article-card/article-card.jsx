@@ -1,12 +1,12 @@
-/* eslint-disable */
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import { Checkbox, Box, Button } from '@mui/material';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
-import ModalWindow from '../modal-window';
 import ReactMarkdown from 'react-markdown';
+import ModalWindow from '../modal-window';
 import formatDate from '../../utilites/formatDate';
 import {
   fetchSetFavoriteArticle,
@@ -20,17 +20,16 @@ import classes from './article-card.module.css';
 function verificationTag(item) {
   if (item.length < 20) {
     return item;
-  } else if (item.length === 0) {
-    return null;
-  } else {
+  }
+  if (item.trim().length === 0) {
     return 'Avatar';
   }
+  return null;
 }
 
 function ArticleCard(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { article, singlePage } = props;
   const userCreatorArticle = article.author.username;
   const userLoggedIn = useSelector(selector.userLoggedIn);
@@ -60,12 +59,18 @@ function ArticleCard(props) {
     navigate('/articles', { replace: true });
   };
 
+  function validateStr(str) {
+    const newStr = str;
+    const capitalized = newStr.charAt(0).toUpperCase() + newStr.slice(1);
+    return capitalized.slice(0, 30);
+  }
+
   return (
     <article>
       <div className={classes.article_text}>
         <div className={classes.article_title}>
           <NavLink to={`/articles/${article.slug}`}>
-            <h1>{article.title.slice(0, 30) || 'Example'}</h1>
+            <h1>{validateStr(article.title) || 'Example'}</h1>
           </NavLink>
           <Checkbox
             icon={<FavoriteBorder />}
@@ -96,7 +101,7 @@ function ArticleCard(props) {
           <img src={article.author.image || avatar} alt="avatar" />
         </div>
         {singlePage && userLoggedIn === userCreatorArticle && (
-          <Box>
+          <Box className={classes.article_avatar_btn}>
             <Button
               color="error"
               variant="outlined"
@@ -121,5 +126,15 @@ function ArticleCard(props) {
     </article>
   );
 }
+
+ArticleCard.propTypes = {
+  article: PropTypes.object,
+  singlePage: PropTypes.bool,
+};
+
+ArticleCard.defaultProps = {
+  article: {},
+  singlePage: false,
+};
 
 export default ArticleCard;

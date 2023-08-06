@@ -5,3 +5,9 @@
 .section_pagination {
   margin-top: 20px;
 }
+
+@media (max-width: 991.9px) {
+  .list {
+    padding: 0 5px;
+  }
+}

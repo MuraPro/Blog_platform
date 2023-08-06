@@ -3,6 +3,7 @@ export const articlesCount = (state) => state.articles.articlesCount;
 export const articleRequestStatus = (state) => state.articles.articleRequestStatus;
 export const errorArticleServer = (state) => state.articles.errorArticleServer;
 export const singlePage = (state) => state.articles.singlePage;
+export const articleIsCreated = (state) => state.articles.articleIsCreated;
 
 export const offset = (state) => state.user.offset;
 export const userName = (state) => state.user.username;

@@ -3,23 +3,17 @@
   min-height: 100vh;
   margin: 0 auto;
   background-color: #ebeef3;
-  /* border: 1px solid red; */
-  /* display: flex;
-  flex-direction: column;
-  align-items: center; */
 }
 
 main {
   max-width: 1440px;
   padding: 3px;
   margin: 0 auto;
-  /* border: 1px solid red; */
 }
 
 section {
   max-width: 950px;
   min-height: 100vh;
-  /* border: 1px solid red; */
   margin: 26px auto;
   display: flex;
   flex-direction: column;

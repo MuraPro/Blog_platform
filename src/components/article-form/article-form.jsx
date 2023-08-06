@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { Box, Button, Container, Divider, Paper, TextField, Typography } from '@mui/material';
 import * as Yup from 'yup';
@@ -165,6 +165,18 @@ const ArticleForm = ({ article, handlerFormSubmit }) => {
       </form>
     </Container>
   );
+};
+
+ArticleForm.propTypes = {
+  article: PropTypes.object,
+  singlePage: PropTypes.bool,
+  handlerFormSubmit: PropTypes.func,
+};
+
+ArticleForm.defaultProps = {
+  article: {},
+  singlePage: false,
+  handlerFormSubmit: () => {},
 };
 
 export default ArticleForm;

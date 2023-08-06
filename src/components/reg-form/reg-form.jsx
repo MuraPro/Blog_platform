@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
@@ -192,6 +192,17 @@ information"
       </form>
     </Box>
   );
+};
+
+RegForm.propTypes = {
+  signUp: PropTypes.bool,
+  user: PropTypes.object,
+  handlerFormSubmit: PropTypes.func,
+};
+
+RegForm.defaultProps = {
+  user: {},
+  handlerFormSubmit: () => {},
 };
 
 export default RegForm;

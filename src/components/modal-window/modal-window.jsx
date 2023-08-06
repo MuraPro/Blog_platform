@@ -1,7 +1,5 @@
-/* eslint-disable react/prop-types */
-import PropTypes from 'prop-types';
-
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Button,
   Dialog,
@@ -34,10 +32,14 @@ const ModalWindow = ({ modalIsOpen, handleCloseModal, handleClickDelete }) => (
 
 ModalWindow.propTypes = {
   modalIsOpen: PropTypes.bool,
+  handleCloseModal: PropTypes.func,
+  handleClickDelete: PropTypes.func,
 };
 
 ModalWindow.defaultProps = {
   modalIsOpen: false,
+  handleCloseModal: () => {},
+  handleClickDelete: () => {},
 };
 
 export default ModalWindow;

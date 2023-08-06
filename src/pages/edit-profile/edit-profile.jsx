@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -20,7 +19,7 @@ const EditProfile = () => {
 
   useEffect(() => {
     if (userRequestStatus === 'fulfilled' && userIsEdit) {
-      navigate(fromPage, { replace: true });
+      navigate(fromPage, { replace: true, state: location.pathname });
       dispatch(setUserIsNotEdit());
     }
   }, [userRequestStatus, userIsEdit]);

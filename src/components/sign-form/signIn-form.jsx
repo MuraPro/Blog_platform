@@ -1,11 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 
-// eslint-disable-next-line react/prop-types
 const SignInForm = ({ handleFormSubmit }) => {
   const validationSchema = Yup.object().shape({
     email: Yup.string().required('Поле "Email" должно быть заполнено').email('Email не верный'),
@@ -92,6 +92,14 @@ const SignInForm = ({ handleFormSubmit }) => {
       </form>
     </Box>
   );
+};
+
+SignInForm.propTypes = {
+  handleFormSubmit: PropTypes.func,
+};
+
+SignInForm.defaultProps = {
+  handleFormSubmit: () => {},
 };
 
 export default SignInForm;

@@ -1,8 +1,8 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLoginUser, setUserIsNotEdit } from '../../store/slices/userSlice';
+import { clearArticleRequestStatus } from '../../store/slices/articleSlice';
 import * as selector from '../../store/selectors/selectors';
 import SignInForm from '../../components/sign-form';
 import ErrorMessage from '../../components/error-message';
@@ -10,6 +10,7 @@ import ErrorMessage from '../../components/error-message';
 const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const userRequestStatus = useSelector(selector.userRequestStatus);
   const errorUserServer = useSelector(selector.errorUserServer);
@@ -17,12 +18,13 @@ const SignIn = () => {
 
   useEffect(() => {
     if (userRequestStatus === 'fulfilled' && userIsEdit) {
-      navigate('/articles', { replace: true });
+      navigate('/articles', { replace: true, state: location.pathname });
       dispatch(setUserIsNotEdit());
     }
   }, [userRequestStatus, userIsEdit]);
 
   const handleFormSubmit = (data) => {
+    dispatch(clearArticleRequestStatus());
     dispatch(fetchLoginUser({ email: data.email, password: data.password }));
   };
   return (

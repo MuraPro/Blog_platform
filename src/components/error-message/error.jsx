@@ -1,5 +1,5 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Alert, Snackbar } from '@mui/material';
@@ -25,11 +25,15 @@ function ErrorMessage({ serverError }) {
     <div>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert severity="error" sx={{ width: '100%' }}>
-          Ошибка "{serverError.statusText}"
+          Ошибка {serverError.statusText}
         </Alert>
       </Snackbar>
     </div>
   );
 }
+
+ErrorMessage.propTypes = {
+  serverError: PropTypes.func.isRequired,
+};
 
 export default ErrorMessage;

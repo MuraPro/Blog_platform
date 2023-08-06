@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar } from '@mui/material';
 import { logOut } from '../../store/slices/userSlice';
@@ -10,19 +10,14 @@ import classes from './header.module.css';
 
 const Header = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
-
   const userName = useSelector(selector.userName) || 'Jon Doe';
-  const auth = useSelector(selector.auth);
   const userAvatar = useSelector(selector.userAvatar) || avatarPicture;
-
-  const fromPage = location.state?.from?.pathname || '/';
+  const auth = sessionStorage.getItem('auth');
 
   const handleLogOutClick = () => {
-    dispatch(clearArticleRequestStatus());
     dispatch(logOut());
-    navigate(fromPage, { replace: true });
+    dispatch(clearArticleRequestStatus());
   };
 
   return (
@@ -36,11 +31,7 @@ const Header = () => {
 
         {!auth && (
           <div className={classes.signs}>
-            <Link
-              to="/sign-in"
-              style={{ textDecoration: 'none' }}
-              state={{ from: location }}
-              className={classes.sign_in}>
+            <Link to="/sign-in" style={{ textDecoration: 'none' }} className={classes.sign_in}>
               Sign In
             </Link>
 
@@ -60,9 +51,13 @@ const Header = () => {
             <Link to="/profile" className={classes.user_avatar}>
               <Avatar alt="Avatar" src={userAvatar} sx={{ width: 46, height: 46 }} />
             </Link>
-            <button type="button" className={classes.sign_logout} onClick={handleLogOutClick}>
+            <Link
+              to="/articles"
+              className={classes.sign_logout}
+              onClick={handleLogOutClick}
+              state={location.pathname}>
               Log Out
-            </button>
+            </Link>
           </div>
         )}
       </div>

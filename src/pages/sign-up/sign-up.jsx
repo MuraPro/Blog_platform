@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -14,14 +13,12 @@ const SignUp = () => {
   const errorUserServer = useSelector((state) => state.user.errorUserServer);
   const userIsEdit = useSelector((state) => state.user.userIsEdit);
 
-  const fromPage = location.state?.from?.pathname || '/';
-
   useEffect(() => {
     if (userRequestStatus === 'fulfilled' && userIsEdit) {
-      navigate('/articles', { replace: true });
+      navigate('/articles', { replace: true, state: location.pathname });
       dispatch(setUserIsNotEdit());
     }
-  }, [fromPage, userRequestStatus, userIsEdit]);
+  }, [userRequestStatus, userIsEdit]);
 
   const handlerFormSubmit = (data) => {
     dispatch(fetchCreateUser(data));

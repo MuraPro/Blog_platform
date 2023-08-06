@@ -28,11 +28,10 @@ const EditArticle = () => {
     if (articleIsCreated === true) {
       navigate(fromPage, { replace: true });
     }
-  }, [navigate, fromPage, articleIsCreated]);
+  }, [articleIsCreated]);
 
   const handlerFormSubmit = ({ title, description, text: body }, tagList) => {
     dispatch(fetchEditArticle({ slug, title, description, body, tagList }));
-
     navigate(fromPage, { replace: true });
   };
 

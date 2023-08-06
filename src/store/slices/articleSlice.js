@@ -1,5 +1,3 @@
-/* eslint-disable */
-/* eslint-disable no-param-reassign,arrow-body-style,no-unused-vars */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import getCookie from '../../utilites/getCookie';
@@ -19,7 +17,7 @@ export const fetchGetArticles = createAsyncThunk(
       })
       .then((res) => res.data)
       .catch((err) => {
-        return rejectWithValue({
+        rejectWithValue({
           status: err.response.status,
           statusText: err.response.statusText,
         });
@@ -32,7 +30,7 @@ export const fetchSingleArticle = createAsyncThunk(
       .get(`https://blog.kata.academy/api/articles/${slug}`)
       .then((res) => res.data)
       .catch((err) => {
-        return rejectWithValue({
+        rejectWithValue({
           status: err.response.status,
           statusText: err.response.statusText,
         });
@@ -62,7 +60,7 @@ export const fetchCreateArticle = createAsyncThunk(
       )
       .then((res) => res.data)
       .catch((err) => {
-        return rejectWithValue({
+        rejectWithValue({
           status: err.response.status,
           statusText: err.response.statusText,
         });
@@ -93,13 +91,14 @@ export const fetchEditArticle = createAsyncThunk(
       )
       .then((res) => res.data)
       .catch((err) => {
-        return rejectWithValue(err.message);
+        rejectWithValue(err.message);
       });
   },
 );
 
 export const fetchDeleteArticle = createAsyncThunk(
   'articles/fetchDeleteArticle',
+
   async (slug, { rejectWithValue }) =>
     axios
       .delete(`https://blog.kata.academy/api/articles/${slug}`, {
@@ -110,7 +109,7 @@ export const fetchDeleteArticle = createAsyncThunk(
       })
       .then((res) => res.data)
       .catch((err) => {
-        return rejectWithValue({
+        rejectWithValue({
           status: err.response.status,
           statusText: err.response.statusText,
         });
@@ -133,7 +132,7 @@ export const fetchSetFavoriteArticle = createAsyncThunk(
       )
       .then((res) => res.data)
       .catch((err) => {
-        return rejectWithValue({
+        rejectWithValue({
           status: err.response.status,
           statusText: err.response.statusText,
         });
@@ -152,7 +151,7 @@ export const fetchDeleteFavoriteArticle = createAsyncThunk(
       })
       .then((res) => res.data)
       .catch((err) => {
-        return rejectWithValue({
+        rejectWithValue({
           status: err.response.status,
           statusText: err.response.statusText,
         });
@@ -202,10 +201,10 @@ const articleSlice = createSlice({
         state.articleRequestStatus = 'pending';
         state.errorArticleServer = null;
       })
-      .addCase(fetchSetFavoriteArticle.pending, (state) => {
+      .addCase(fetchSetFavoriteArticle.pending, () => {
         // console.log('Отправка запроса на добавление в избранное');
       })
-      .addCase(fetchDeleteFavoriteArticle.pending, (state) => {
+      .addCase(fetchDeleteFavoriteArticle.pending, () => {
         // console.log('Отправка запроса на удаление из избранного');
       })
 
