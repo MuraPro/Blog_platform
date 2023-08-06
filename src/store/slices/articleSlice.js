@@ -157,7 +157,7 @@ export const fetchDeleteFavoriteArticle = createAsyncThunk(
         });
       }),
 );
-
+/* eslint-disable no-param-reassign */
 const articleSlice = createSlice({
   name: 'articles',
   initialState: {
