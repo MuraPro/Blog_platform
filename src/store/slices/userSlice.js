@@ -160,6 +160,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUpdateUserProfile.fulfilled, (state) => {
         state.userRequestStatus = 'fulfilled';
+        state.image = action.payload.user.image;
         state.userIsEdit = true;
       })
       .addCase(fetchLoginUser.rejected, (state, action) => {
