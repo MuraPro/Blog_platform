@@ -27,11 +27,11 @@ function ArticleList() {
   const offset = useSelector($offset);
 
   useEffect(() => {
-    dispatch(fetchGetArticles({ limit: 3, offset }));
+    dispatch(fetchGetArticles({ limit: 5, offset }));
   }, []);
 
   useEffect(() => {
-    dispatch(fetchGetArticles({ limit: 3, offset }));
+    dispatch(fetchGetArticles({ limit: 5, offset }));
   }, [offset, state]);
 
   return (
