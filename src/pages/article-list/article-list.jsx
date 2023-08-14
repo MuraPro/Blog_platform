@@ -28,6 +28,10 @@ function ArticleList() {
 
   useEffect(() => {
     dispatch(fetchGetArticles({ limit: 3, offset }));
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchGetArticles({ limit: 3, offset }));
   }, [offset, state]);
 
   return (
