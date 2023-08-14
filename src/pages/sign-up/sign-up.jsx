@@ -22,13 +22,13 @@ const SignUp = () => {
 
   useEffect(() => {
     if (userRequestStatus === 'fulfilled' && userIsEdit) {
+      toast.success('Users data has created successfully!');
       navigate('/articles', { replace: true, state: location.pathname });
       dispatch(setUserIsNotEdit());
     }
   }, [userRequestStatus, userIsEdit]);
 
   const handlerFormSubmit = (data) => {
-    toast.success('Users data has created successfully!');
     dispatch(fetchCreateUser(data));
   };
 
