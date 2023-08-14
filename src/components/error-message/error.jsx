@@ -25,7 +25,7 @@ function ErrorMessage({ serverError }) {
     <div>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert severity="error" sx={{ width: '100%' }}>
-          Ошибка {serverError.statusText}
+          {serverError.statusText || serverError.status || serverError.message}
         </Alert>
       </Snackbar>
     </div>
@@ -33,7 +33,11 @@ function ErrorMessage({ serverError }) {
 }
 
 ErrorMessage.propTypes = {
-  serverError: PropTypes.func.isRequired,
+  serverError: PropTypes.object,
+};
+
+ErrorMessage.defaultProps = {
+  serverError: {},
 };
 
 export default ErrorMessage;

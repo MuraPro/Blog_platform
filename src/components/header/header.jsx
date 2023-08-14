@@ -1,23 +1,24 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar } from '@mui/material';
-import { logOut } from '../../store/slices/userSlice';
-import avatarPicture from '../../icons/avatar.png';
+import { logOut, $userName, $userAvatar } from '../../store/slices/userSlice';
 import { clearArticleRequestStatus } from '../../store/slices/articleSlice';
-import * as selector from '../../store/selectors/selectors';
+import avatarPicture from '../../icons/avatar.png';
 import classes from './header.module.css';
 
 const Header = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const userName = useSelector(selector.userName) || 'Jon Doe';
-  const userAvatar = useSelector(selector.userAvatar) || avatarPicture;
+  const userName = useSelector($userName) || 'Jon Doe';
+  const userAvatar = useSelector($userAvatar) || avatarPicture;
   const auth = sessionStorage.getItem('auth');
 
   const handleLogOutClick = () => {
     dispatch(logOut());
     dispatch(clearArticleRequestStatus());
+    toast.info('You have logged out successfully');
   };
 
   return (

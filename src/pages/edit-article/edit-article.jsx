@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { fetchEditArticle, fetchSingleArticle } from '../../store/slices/articleSlice';
+import { toast } from 'react-toastify';
+import {
+  fetchEditArticle,
+  fetchSingleArticle,
+  $singleArticle,
+} from '../../store/slices/articleSlice';
 import ArticleForm from '../../components/article-form';
 import ModalWindow from '../../components/modal-window';
 import ErrorMessage from '../../components/error-message';
@@ -10,7 +15,7 @@ import Spinner from '../../components/spinner';
 const EditArticle = () => {
   const dispatch = useDispatch();
   const { slug } = useParams();
-  const article = useSelector((state) => state.articles.singleArticle);
+  const article = useSelector($singleArticle);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,7 +37,7 @@ const EditArticle = () => {
 
   const handlerFormSubmit = ({ title, description, text: body }, tagList) => {
     dispatch(fetchEditArticle({ slug, title, description, body, tagList }));
-    navigate(fromPage, { replace: true });
+    toast.success('Article has edited successfully!');
   };
 
   return (

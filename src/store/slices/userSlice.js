@@ -23,10 +23,9 @@ export const fetchLoginUser = createAsyncThunk(
       )
       .then((res) => res.data)
       .catch((err) => {
-        console.log('err.response', err.response);
         return rejectWithValue({
-          status: err.response.status,
-          statusText: err?.response?.data?.errors?.message || 'Логин или пароль не верные',
+          status: `error code is ${err.response.status}`,
+          statusText: `email or password ${err?.response?.data?.errors['email or password']}`,
         });
       });
   },
@@ -53,9 +52,8 @@ export const fetchCreateUser = createAsyncThunk(
       .then((res) => res.data)
       .catch((err) => {
         return rejectWithValue({
-          status: err.response.status,
-          statusText:
-            err?.response?.data?.errors?.message || 'Не верные данные. Проверьте заполнение полей!',
+          status: `error code is ${err.response.status}`,
+          statusText: `email ${err?.response?.data?.errors?.email}`,
         });
       });
   },
@@ -65,7 +63,6 @@ export const fetchUpdateUserProfile = createAsyncThunk(
   'user/fetchUpdateUserProfile',
   // eslint-disable-next-line no-unused-vars
   async ({ userName: username, email, password, avatarUrl: image }, { _, rejectWithValue }) => {
-    console.log('Incoming data', username, email, password, image);
     return axios
       .put(
         `https://blog.kata.academy/api/user`,
@@ -80,7 +77,7 @@ export const fetchUpdateUserProfile = createAsyncThunk(
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Token ${getCookie('token')}`,
+            Authorization: `Bearer ${getCookie('token')}`,
           },
         },
       )
@@ -88,9 +85,7 @@ export const fetchUpdateUserProfile = createAsyncThunk(
       .catch((err) => {
         return rejectWithValue({
           status: err.response.status,
-          statusText:
-            err?.response?.data?.errors?.message ||
-            'Данные не изменились. Такой пользователь уже существует!',
+          statusText: `username ${err?.response?.data?.errors.username}`,
         });
       });
   },
@@ -160,28 +155,38 @@ const userSlice = createSlice({
       })
       .addCase(fetchUpdateUserProfile.fulfilled, (state, action) => {
         state.userRequestStatus = 'fulfilled';
+        state.username = action.payload.user.username;
+        state.email = action.payload.user.email;
+        state.password = action.payload.user.password;
         state.image = action.payload.user.image;
         state.userIsEdit = true;
       })
       .addCase(fetchLoginUser.rejected, (state, action) => {
-        console.log('User not logged in, error!!!', action.payload);
         state.errorUserServer = action.payload;
         state.userRequestStatus = 'rejected';
       })
       .addCase(fetchCreateUser.rejected, (state, action) => {
-        console.log('User not created, error!!!', action.payload);
         state.errorUserServer = action.payload;
         state.userRequestStatus = 'rejected';
         state.userIsEdit = false;
       })
       .addCase(fetchUpdateUserProfile.rejected, (state, action) => {
-        console.log('User not updated, error!!!', action.payload);
         state.errorUserServer = action.payload;
         state.userRequestStatus = 'rejected';
         state.userIsEdit = false;
       });
   },
 });
+
+export const $offset = (state) => state.user.offset;
+export const $userName = (state) => state.user.username;
+export const $auth = (state) => state.user.email;
+export const $userAvatar = (state) => state.user.image;
+export const $userLoggedIn = (state) => state.user.username;
+export const $user = (state) => state.user;
+export const $userRequestStatus = (state) => state.user.userRequestStatus;
+export const $errorUserServer = (state) => state.user.errorUserServer;
+export const $userIsEdit = (state) => state.user.userIsEdit;
 
 // eslint-disable-next-line no-empty-pattern
 export const { logOut, setUserIsNotEdit, resetUserError, setOffset } = userSlice.actions;

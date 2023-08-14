@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
@@ -12,19 +13,28 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+import { $disabled } from '../../store/slices/articleSlice';
 
 const RegForm = ({ signUp, user, handlerFormSubmit }) => {
+  const disabled = useSelector($disabled);
+
   const formTitle = signUp ? 'Create new account' : 'Edit profile';
   const buttonLabel = signUp ? 'Create' : 'Save';
 
   const validationSchema = Yup.object().shape({
     userName: Yup.string()
+      .typeError('Должно быть строкой')
       .required('Поле "Имя пользователя" должно быть заполнено')
       .min(3, 'Имя пользователя не должно содержать менее 3 символов')
-      .max(20, 'Имя пользователя не должно содержать более 20 символов'),
-    email: Yup.string().required('Поле "Email" должно быть заполнено').email('Email не верный'),
+      .max(20, 'Имя пользователя не должно содержать более 20 символов')
+      .matches(/^[a-z][a-z0-9]*$/, 'Используйте строчные буквы')
+      .lowercase(),
+    email: Yup.string()
+      .required('Поле "Email" должно быть заполнено')
+      .email('Email не корректный')
+      .lowercase(),
     password: Yup.string()
       .min(6, 'Поле "Password" не должно содержать менее 6 символов')
       .required('Поле "Password" должно быть заполнено'),
@@ -174,6 +184,7 @@ information"
           )}
 
           <Button
+            disabled={disabled}
             type="submit"
             variant="contained"
             fullWidth

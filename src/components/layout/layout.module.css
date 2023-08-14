@@ -3,6 +3,7 @@
   min-height: 100vh;
   margin: 0 auto;
   background-color: #ebeef3;
+  position: relative;
 }
 
 main {
@@ -18,4 +19,25 @@ section {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.sr-only {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  top: auto;
+  overflow: hidden;
+}
+
+.full-page-error-message {
+  max-width: 400px;
+  margin: 150px auto;
+  padding: 20px 20px 0;
+  font-size: 24px;
+
+  border-radius: 5px;
+  border: 1px solid $color-error;
+  color: $color-error;
+  background: #fff;
 }

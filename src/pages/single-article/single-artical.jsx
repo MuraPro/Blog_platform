@@ -3,8 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Chip } from '@mui/material';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowBackIos';
-import { fetchSingleArticle } from '../../store/slices/articleSlice';
-import * as selector from '../../store/selectors/selectors';
+import {
+  fetchSingleArticle,
+  $articleRequestStatus,
+  $errorArticleServer,
+  $singlePage,
+} from '../../store/slices/articleSlice';
 import ArticleCard from '../../components/article-card';
 import Spinner from '../../components/spinner';
 import ErrorMessage from '../../components/error-message';
@@ -14,9 +18,9 @@ const SingleArticle = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
 
-  const articleRequestStatus = useSelector(selector.articleRequestStatus);
-  const errorArticleServer = useSelector(selector.errorArticleServer);
-  const singlePage = useSelector(selector.singlePage);
+  const articleRequestStatus = useSelector($articleRequestStatus);
+  const errorArticleServer = useSelector($errorArticleServer);
+  const singlePage = useSelector($singlePage);
 
   useEffect(() => {
     dispatch(fetchSingleArticle(slug));

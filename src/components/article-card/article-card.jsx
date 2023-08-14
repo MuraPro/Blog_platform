@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { nanoid } from 'nanoid';
 import { Checkbox, Box, Button } from '@mui/material';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
@@ -12,9 +13,10 @@ import {
   fetchSetFavoriteArticle,
   fetchDeleteFavoriteArticle,
   fetchDeleteArticle,
+  $disabled,
 } from '../../store/slices/articleSlice';
+import { $userLoggedIn } from '../../store/slices/userSlice';
 import avatar from '../../icons/avatar.png';
-import * as selector from '../../store/selectors/selectors';
 import classes from './article-card.module.css';
 
 function verificationTag(item) {
@@ -32,7 +34,8 @@ function ArticleCard(props) {
   const navigate = useNavigate();
   const { article, singlePage } = props;
   const userCreatorArticle = article.author.username;
-  const userLoggedIn = useSelector(selector.userLoggedIn);
+  const userLoggedIn = useSelector($userLoggedIn);
+  const disabled = useSelector($disabled);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [checkFavorite, setCheckFavorite] = useState(article?.favorited || false);
@@ -56,6 +59,7 @@ function ArticleCard(props) {
   const deleteArticle = () => {
     dispatch(fetchDeleteArticle(article.slug));
     setModalIsOpen(false);
+    toast.success('Article has deleted successfully!');
     navigate('/articles', { replace: true });
   };
 
@@ -103,6 +107,7 @@ function ArticleCard(props) {
         {singlePage && userLoggedIn === userCreatorArticle && (
           <Box className={classes.article_avatar_btn}>
             <Button
+              disabled={disabled}
               color="error"
               variant="outlined"
               sx={{ textTransform: 'none', mr: 2 }}
@@ -110,7 +115,11 @@ function ArticleCard(props) {
               Delete
             </Button>
             <Link to="edit" style={{ textDecoration: 'none' }}>
-              <Button color="success" variant="outlined" sx={{ textTransform: 'none' }}>
+              <Button
+                disabled={disabled}
+                color="success"
+                variant="outlined"
+                sx={{ textTransform: 'none' }}>
                 Edit
               </Button>
             </Link>
