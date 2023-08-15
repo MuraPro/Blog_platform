@@ -25,7 +25,7 @@ export const fetchLoginUser = createAsyncThunk(
       .catch((err) => {
         return rejectWithValue({
           status: `error code is ${err.response.status}`,
-          statusText: `email or password ${err?.response?.data?.errors['email or password']}`,
+          statusText: err?.response?.data?.errors,
         });
       });
   },
@@ -59,12 +59,6 @@ export const fetchCreateUser = createAsyncThunk(
   },
 );
 
-// return rejectWithValue({
-//     status: `error code is ${err.response.status}`,
-//     statusText:
-//       `email ${err?.response?.data?.errors?.email}`
-//   });
-
 export const fetchUpdateUserProfile = createAsyncThunk(
   'user/fetchUpdateUserProfile',
   // eslint-disable-next-line no-unused-vars
@@ -91,7 +85,7 @@ export const fetchUpdateUserProfile = createAsyncThunk(
       .catch((err) => {
         return rejectWithValue({
           status: err.response.status,
-          statusText: `username ${err?.response?.data?.errors.username}`,
+          statusText: err?.response?.data?.errors,
         });
       });
   },

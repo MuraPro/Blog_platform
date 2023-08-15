@@ -8,8 +8,7 @@ import { resetUserError } from '../../store/slices/userSlice';
 function ErrorMessage({ serverError }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const { username, email } = serverError.statusText;
+  const errors = Object.entries(serverError.statusText);
 
   const [open, setOpen] = useState(true);
 
@@ -27,7 +26,9 @@ function ErrorMessage({ serverError }) {
     <div>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert severity="error" sx={{ width: '100%' }}>
-          {username ? `username ${username}` : `email ${email}` || serverError.status}
+          {`${errors[0][0]}  ${errors[0][1]}`}
+          {/* {username ? `username ${username}` : `email ${email}`} */}
+          {/* {serverError.statusText} */}
         </Alert>
       </Snackbar>
     </div>
