@@ -7,9 +7,11 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 import { $disabled } from '../../store/slices/articleSlice';
+// import { $errorUserServer } from '../../store/slices/userSlice';
 
 const SignInForm = ({ handleFormSubmit }) => {
   const disabled = useSelector($disabled);
+  //   const errorUserServer = useSelector($errorUserServer);
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -64,10 +66,8 @@ const SignInForm = ({ handleFormSubmit }) => {
               mb: 1,
             }}
             {...register('email', {
-              required: 'Email is required',
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                message: 'Enter correct email',
               },
             })}
             error={!!errors?.email}

@@ -27,8 +27,6 @@ function ErrorMessage({ serverError }) {
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert severity="error" sx={{ width: '100%' }}>
           {`${errors[0][0]}  ${errors[0][1]}`}
-          {/* {username ? `username ${username}` : `email ${email}`} */}
-          {/* {serverError.statusText} */}
         </Alert>
       </Snackbar>
     </div>
