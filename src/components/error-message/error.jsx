@@ -9,6 +9,8 @@ function ErrorMessage({ serverError }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { username, email } = serverError.statusText;
+
   const [open, setOpen] = useState(true);
 
   useEffect(() => {
@@ -25,7 +27,7 @@ function ErrorMessage({ serverError }) {
     <div>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert severity="error" sx={{ width: '100%' }}>
-          {serverError.statusText || serverError.status || serverError.message}
+          {username ? `username ${username}` : `email ${email}` || serverError.status}
         </Alert>
       </Snackbar>
     </div>

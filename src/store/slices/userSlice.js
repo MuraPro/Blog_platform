@@ -53,11 +53,17 @@ export const fetchCreateUser = createAsyncThunk(
       .catch((err) => {
         return rejectWithValue({
           status: `error code is ${err.response.status}`,
-          statusText: `email ${err?.response?.data?.errors?.email}`,
+          statusText: err?.response?.data?.errors,
         });
       });
   },
 );
+
+// return rejectWithValue({
+//     status: `error code is ${err.response.status}`,
+//     statusText:
+//       `email ${err?.response?.data?.errors?.email}`
+//   });
 
 export const fetchUpdateUserProfile = createAsyncThunk(
   'user/fetchUpdateUserProfile',
