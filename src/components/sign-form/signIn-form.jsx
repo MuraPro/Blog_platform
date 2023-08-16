@@ -13,7 +13,6 @@ import {
   $disabled,
   enableButtons,
   setUserRequestStatus,
-  resetUserError,
 } from '../../store/slices/userSlice';
 import './sign-form.css';
 
@@ -28,7 +27,6 @@ const SignInForm = ({ handleFormSubmit }) => {
     if (userRequestStatus === 'rejected') {
       toast.error(`email or password ${errorMessage}`);
       dispatch(enableButtons());
-      dispatch(resetUserError());
       dispatch(setUserRequestStatus());
     }
   }, [userRequestStatus]);

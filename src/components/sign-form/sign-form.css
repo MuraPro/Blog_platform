@@ -1,9 +1,14 @@
 .error-message {
   color: #f5222d;
   padding-bottom: 15px;
-  padding-left: 10px;
-  font-family: inter;
-  font-size: 15px;
+  padding-left: 14px;
   line-height: 10px;
   display: inline-block;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1.66;
+  letter-spacing: 0.03333em;
+  text-align: left;
+  margin-top: -10px;
 }
