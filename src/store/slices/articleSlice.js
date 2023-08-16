@@ -18,8 +18,8 @@ export const fetchGetArticles = createAsyncThunk(
       .then((res) => res.data)
       .catch((err) => {
         rejectWithValue({
-          status: err.response.status,
-          statusText: err.response.statusText,
+          status: `error code is ${err.response.status}`,
+          statusText: err?.response?.data?.errors,
         });
       }),
 );
@@ -31,8 +31,8 @@ export const fetchSingleArticle = createAsyncThunk(
       .then((res) => res.data)
       .catch((err) => {
         rejectWithValue({
-          status: err.response.status,
-          statusText: err.response.statusText,
+          status: `error code is ${err.response.status}`,
+          statusText: err?.response?.data?.errors,
         });
       }),
 );
@@ -61,8 +61,8 @@ export const fetchCreateArticle = createAsyncThunk(
       .then((res) => res.data)
       .catch((err) => {
         rejectWithValue({
-          status: err.response.status,
-          statusText: err.response.statusText,
+          status: `error code is ${err.response.status}`,
+          statusText: err?.response?.data?.errors,
         });
       });
   },
@@ -92,8 +92,8 @@ export const fetchEditArticle = createAsyncThunk(
       .then((res) => res.data)
       .catch((err) => {
         rejectWithValue({
-          status: err.response.status,
-          statusText: err.response.statusText,
+          status: `error code is ${err.response.status}`,
+          statusText: err?.response?.data?.errors,
         });
       });
   },
@@ -113,8 +113,8 @@ export const fetchDeleteArticle = createAsyncThunk(
       .then((res) => res.data)
       .catch((err) => {
         rejectWithValue({
-          status: err.response.status,
-          statusText: err.response.statusText,
+          status: `error code is ${err.response.status}`,
+          statusText: err?.response?.data?.errors,
         });
       }),
 );
@@ -136,8 +136,8 @@ export const fetchSetFavoriteArticle = createAsyncThunk(
       .then((res) => res.data)
       .catch((err) => {
         rejectWithValue({
-          status: err.response.status,
-          statusText: err.response.statusText,
+          status: `error code is ${err.response.status}`,
+          statusText: err?.response?.data?.errors,
         });
       }),
 );
@@ -155,8 +155,8 @@ export const fetchDeleteFavoriteArticle = createAsyncThunk(
       .then((res) => res.data)
       .catch((err) => {
         rejectWithValue({
-          status: err.response.status,
-          statusText: err.response.statusText,
+          status: `error code is ${err.response.status}`,
+          statusText: err?.response?.data?.errors,
         });
       }),
 );
@@ -171,7 +171,6 @@ const articleSlice = createSlice({
     errorArticleServer: null,
     articleIsCreated: false,
     singlePage: false,
-    disabled: false,
   },
   reducers: {
     clearArticleRequestStatus(state) {
@@ -180,115 +179,93 @@ const articleSlice = createSlice({
     clearSingleArticles(state) {
       state.singleArticle = null;
     },
+    clearErrorArticleServer(state) {
+      state.errorArticleServer = null;
+    },
   },
 
   extraReducers: (builder) => {
     builder
       .addCase(fetchGetArticles.pending, (state) => {
         state.articleRequestStatus = 'pending';
-        state.disabled = true;
         state.errorArticleServer = null;
         state.articleIsCreated = false;
       })
       .addCase(fetchSingleArticle.pending, (state) => {
         state.articleRequestStatus = 'pending';
-        state.disabled = true;
         state.errorArticleServer = null;
         state.articleIsCreated = false;
       })
       .addCase(fetchCreateArticle.pending, (state) => {
         state.articleRequestStatus = 'pending';
-        state.disabled = true;
         state.errorArticleServer = null;
         state.articleIsCreated = false;
       })
       .addCase(fetchEditArticle.pending, (state) => {
         state.articleRequestStatus = 'pending';
-        state.disabled = true;
         state.errorArticleServer = null;
         state.articleIsCreated = false;
       })
       .addCase(fetchDeleteArticle.pending, (state) => {
         state.articleRequestStatus = 'pending';
-        state.disabled = true;
         state.errorArticleServer = null;
       })
-      .addCase(fetchSetFavoriteArticle.pending, (state) => {
-        state.disabled = true;
-      })
-      .addCase(fetchDeleteFavoriteArticle.pending, (state) => {
-        state.disabled = true;
-      })
+      .addCase(fetchSetFavoriteArticle.pending, () => {})
+      .addCase(fetchDeleteFavoriteArticle.pending, () => {})
       .addCase(fetchGetArticles.fulfilled, (state, action) => {
         state.articles = [...action.payload.articles];
         state.articlesCount = action.payload.articlesCount;
         state.articleRequestStatus = 'fulfilled';
-        state.disabled = false;
         state.singlePage = false;
       })
       .addCase(fetchSingleArticle.fulfilled, (state, action) => {
         state.singleArticle = { ...action.payload.article };
         state.articleRequestStatus = 'fulfilled';
-        state.disabled = false;
         state.singlePage = true;
       })
       .addCase(fetchCreateArticle.fulfilled, (state) => {
         state.articleRequestStatus = 'fulfilled';
-        state.disabled = false;
         state.articleIsCreated = true;
         state.singlePage = false;
       })
       .addCase(fetchEditArticle.fulfilled, (state) => {
         state.articleRequestStatus = 'fulfilled';
-        state.disabled = false;
         state.articleIsCreated = true;
         state.singlePage = false;
       })
       .addCase(fetchDeleteArticle.fulfilled, (state) => {
         state.articleRequestStatus = 'fulfilled';
-        state.disabled = false;
         state.singleArticle = null;
         state.singlePage = false;
       })
-      .addCase(fetchSetFavoriteArticle.fulfilled, (state) => {
-        state.disabled = false;
-      })
-      .addCase(fetchDeleteFavoriteArticle.fulfilled, (state) => {
-        state.disabled = false;
-      })
+      .addCase(fetchSetFavoriteArticle.fulfilled, () => {})
+      .addCase(fetchDeleteFavoriteArticle.fulfilled, () => {})
       .addCase(fetchGetArticles.rejected, (state, action) => {
-        state.errorArticleServer = action.payload;
-        state.disabled = false;
+        state.errorArticleServer = action.payload.status;
         state.articleRequestStatus = 'rejected';
       })
       .addCase(fetchSingleArticle.rejected, (state, action) => {
         state.errorArticleServer = action.payload;
-        state.disabled = false;
         state.articleRequestStatus = 'rejected';
       })
       .addCase(fetchCreateArticle.rejected, (state, action) => {
         state.errorArticleServer = action.payload;
-        state.disabled = false;
         state.articleRequestStatus = 'rejected';
       })
       .addCase(fetchEditArticle.rejected, (state, action) => {
         state.errorArticleServer = action.payload;
-        state.disabled = false;
         state.articleRequestStatus = 'rejected';
       })
       .addCase(fetchDeleteArticle.rejected, (state, action) => {
         state.errorArticleServer = action.payload;
-        state.disabled = false;
         state.articleRequestStatus = 'rejected';
       })
       .addCase(fetchSetFavoriteArticle.rejected, (state, action) => {
         state.errorArticleServer = action.payload;
-        state.disabled = false;
         state.articleRequestStatus = 'rejected';
       })
       .addCase(fetchDeleteFavoriteArticle.rejected, (state, action) => {
         state.errorArticleServer = action.payload;
-        state.disabled = false;
         state.articleRequestStatus = 'rejected';
       });
   },
@@ -301,11 +278,11 @@ export const $errorArticleServer = (state) => state.articles.errorArticleServer;
 export const $singlePage = (state) => state.articles.singlePage;
 export const $singleArticle = (state) => state.articles.singleArticle;
 export const $articleIsCreated = (state) => state.articles.articleIsCreated;
-export const $disabled = (state) => state.articles.disabled;
 
 // eslint-disable-next-line no-empty-pattern
-const { clearArticleRequestStatus, clearSingleArticles } = articleSlice.actions;
+const { clearArticleRequestStatus, clearSingleArticles, clearErrorArticleServer } =
+  articleSlice.actions;
 
-export { clearArticleRequestStatus, clearSingleArticles };
+export { clearArticleRequestStatus, clearSingleArticles, clearErrorArticleServer };
 
 export default articleSlice.reducer;

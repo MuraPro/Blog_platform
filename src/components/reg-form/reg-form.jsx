@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import {
   Box,
   Button,
@@ -15,13 +16,35 @@ import {
 } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { $disabled } from '../../store/slices/articleSlice';
+import {
+  $errorUserServer,
+  $userRequestStatus,
+  $disabled,
+  enableButtons,
+  setUserRequestStatus,
+} from '../../store/slices/userSlice';
+
+import './reg-form.css';
 
 const RegForm = ({ signUp, user, handlerFormSubmit }) => {
+  const dispatch = useDispatch();
   const disabled = useSelector($disabled);
+  const errorUserServer = useSelector($errorUserServer);
+  const userRequestStatus = useSelector($userRequestStatus);
+  const userError = errorUserServer?.statusText?.username;
+  const emailError = errorUserServer?.statusText?.email;
 
   const formTitle = signUp ? 'Create new account' : 'Edit profile';
   const buttonLabel = signUp ? 'Create' : 'Save';
+
+  useEffect(() => {
+    if (userRequestStatus === 'rejected') {
+      if (userError) toast.error(`Username ${userError}`);
+      if (emailError) toast.error(`Email ${emailError}`);
+      dispatch(enableButtons());
+      dispatch(setUserRequestStatus());
+    }
+  }, [userRequestStatus]);
 
   const validationSchema = Yup.object().shape({
     userName: Yup.string()
@@ -98,9 +121,10 @@ const RegForm = ({ signUp, user, handlerFormSubmit }) => {
               mb: 1,
             }}
             {...register('userName')}
-            error={!!errors?.userName}
+            error={!!errors?.userName || userError}
             helperText={errors?.userName?.message}
           />
+          {userError && <p className="form-error-message">{`username ${userError}`}</p>}
 
           <TextField
             id="email"
@@ -113,9 +137,10 @@ const RegForm = ({ signUp, user, handlerFormSubmit }) => {
               mb: 1,
             }}
             {...register('email')}
-            error={!!errors?.email}
+            error={!!errors?.email || emailError}
             helperText={errors?.email?.message}
           />
+          {emailError && <p className="form-error-message">{`email ${emailError}`}</p>}
 
           <TextField
             id="password"

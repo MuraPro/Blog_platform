@@ -102,6 +102,7 @@ const userSlice = createSlice({
     errorUserServer: null,
     userIsEdit: false,
     isLogged: null,
+    disabled: false,
   },
   reducers: {
     logOut(state) {
@@ -110,11 +111,16 @@ const userSlice = createSlice({
       state.username = '';
       state.email = '';
       state.image = '';
-      state.userRequestStatus = '';
+      state.userRequestStatus = null;
+      state.errorUserServer = null;
       state.offset = 0;
+      state.disabled = false;
     },
     setUserIsNotEdit(state) {
       state.userIsEdit = false;
+    },
+    setUserRequestStatus(state) {
+      state.userRequestStatus = null;
     },
     resetUserError(state) {
       state.errorUserServer = null;
@@ -122,26 +128,36 @@ const userSlice = createSlice({
     setOffset(state, action) {
       state.offset = action.payload;
     },
+    enableButtons(state) {
+      state.disabled = false;
+    },
+    disableButtons(state) {
+      state.disabled = true;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchLoginUser.pending, (state) => {
         state.userRequestStatus = 'pending';
+        state.disabled = true;
         state.errorUserServer = null;
         state.userIsEdit = false;
       })
       .addCase(fetchCreateUser.pending, (state) => {
         state.userRequestStatus = 'pending';
+        state.disabled = true;
         state.errorUserServer = null;
         state.userIsEdit = false;
       })
       .addCase(fetchUpdateUserProfile.pending, (state) => {
         state.userRequestStatus = 'pending';
+        state.disabled = true;
         state.errorUserServer = null;
         state.userIsEdit = false;
       })
       .addCase(fetchLoginUser.fulfilled, (state, action) => {
         state.userRequestStatus = 'fulfilled';
+        state.disabled = false;
         state.username = action.payload.user.username;
         state.email = action.payload.user.email;
         state.image = action.payload.user.image;
@@ -151,10 +167,12 @@ const userSlice = createSlice({
       })
       .addCase(fetchCreateUser.fulfilled, (state) => {
         state.userRequestStatus = 'fulfilled';
+        state.disabled = false;
         state.userIsEdit = true;
       })
       .addCase(fetchUpdateUserProfile.fulfilled, (state, action) => {
         state.userRequestStatus = 'fulfilled';
+        state.disabled = false;
         state.username = action.payload.user.username;
         state.email = action.payload.user.email;
         state.password = action.payload.user.password;
@@ -164,15 +182,18 @@ const userSlice = createSlice({
       .addCase(fetchLoginUser.rejected, (state, action) => {
         state.errorUserServer = action.payload;
         state.userRequestStatus = 'rejected';
+        state.disabled = false;
       })
       .addCase(fetchCreateUser.rejected, (state, action) => {
         state.errorUserServer = action.payload;
         state.userRequestStatus = 'rejected';
+        state.disabled = false;
         state.userIsEdit = false;
       })
       .addCase(fetchUpdateUserProfile.rejected, (state, action) => {
         state.errorUserServer = action.payload;
         state.userRequestStatus = 'rejected';
+        state.disabled = false;
         state.userIsEdit = false;
       });
   },
@@ -187,8 +208,17 @@ export const $user = (state) => state.user;
 export const $userRequestStatus = (state) => state.user.userRequestStatus;
 export const $errorUserServer = (state) => state.user.errorUserServer;
 export const $userIsEdit = (state) => state.user.userIsEdit;
+export const $disabled = (state) => state.user.disabled;
 
 // eslint-disable-next-line no-empty-pattern
-export const { logOut, setUserIsNotEdit, resetUserError, setOffset } = userSlice.actions;
+export const {
+  logOut,
+  setUserIsNotEdit,
+  resetUserError,
+  setOffset,
+  disableButtons,
+  enableButtons,
+  setUserRequestStatus,
+} = userSlice.actions;
 
 export default userSlice.reducer;

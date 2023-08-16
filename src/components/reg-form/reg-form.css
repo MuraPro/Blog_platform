@@ -1,0 +1,12 @@
+.css-1uhmazi-MuiFormControl-root-MuiTextField-root {
+  margin-bottom: 15px !important;
+}
+
+.form-error-message {
+  color: #f5222d;
+  padding-bottom: 15px;
+  padding-left: 10px;
+  font-family: inter;
+  font-size: 15px;
+  line-height: 10px;
+}

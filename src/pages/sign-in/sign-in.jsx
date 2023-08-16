@@ -6,12 +6,13 @@ import {
   fetchLoginUser,
   setUserIsNotEdit,
   $userRequestStatus,
-  $errorUserServer,
+  //   $errorUserServer,
   $userIsEdit,
+  resetUserError,
 } from '../../store/slices/userSlice';
 import { clearArticleRequestStatus } from '../../store/slices/articleSlice';
 import SignInForm from '../../components/sign-form';
-import ErrorMessage from '../../components/error-message';
+// import ErrorMessage from '../../components/error-message';
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -19,13 +20,14 @@ const SignIn = () => {
   const location = useLocation();
 
   const userRequestStatus = useSelector($userRequestStatus);
-  const errorUserServer = useSelector($errorUserServer);
+  //   const errorUserServer = useSelector($errorUserServer);
   const userIsEdit = useSelector($userIsEdit);
 
   useEffect(() => {
     if (userRequestStatus === 'fulfilled' && userIsEdit) {
       toast.success('You have logged in successfully');
       navigate('/articles', { replace: true, state: location.pathname });
+      dispatch(resetUserError());
       dispatch(setUserIsNotEdit());
     }
   }, [userRequestStatus, userIsEdit]);
@@ -37,7 +39,6 @@ const SignIn = () => {
 
   return (
     <>
-      {errorUserServer && <ErrorMessage serverError={errorUserServer} />}
       <SignInForm handleFormSubmit={handleFormSubmit} />
     </>
   );

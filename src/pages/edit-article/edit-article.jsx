@@ -6,11 +6,12 @@ import {
   fetchEditArticle,
   fetchSingleArticle,
   $singleArticle,
+  clearErrorArticleServer,
 } from '../../store/slices/articleSlice';
 import ArticleForm from '../../components/article-form';
 import ModalWindow from '../../components/modal-window';
-import ErrorMessage from '../../components/error-message';
 import Spinner from '../../components/spinner';
+import ErrorIndicator from '../../components/error-indicator/error-indicator';
 
 const EditArticle = () => {
   const dispatch = useDispatch();
@@ -40,9 +41,16 @@ const EditArticle = () => {
     toast.success('Article has edited successfully!');
   };
 
+  useEffect(() => {
+    if (errorArticleServer) {
+      toast.error('Article has not edited. Something went wrong!');
+      dispatch(clearErrorArticleServer());
+    }
+  }, [errorArticleServer]);
+
   return (
     <>
-      {articleRequestStatus === 'rejected' && <ErrorMessage serverError={errorArticleServer} />}
+      {articleRequestStatus === 'rejected' && errorArticleServer && <ErrorIndicator />}
       {articleRequestStatus === 'pending' && <Spinner />}
       {articleRequestStatus === 'fulfilled' && article && (
         <>

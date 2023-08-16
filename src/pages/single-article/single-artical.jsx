@@ -2,36 +2,46 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Chip } from '@mui/material';
+import { toast } from 'react-toastify';
 import ArrowCircleLeftOutlinedIcon from '@mui/icons-material/ArrowBackIos';
 import {
   fetchSingleArticle,
-  $articleRequestStatus,
   $errorArticleServer,
+  $articleRequestStatus,
+  $singleArticle,
   $singlePage,
+  clearErrorArticleServer,
 } from '../../store/slices/articleSlice';
 import ArticleCard from '../../components/article-card';
 import Spinner from '../../components/spinner';
-import ErrorMessage from '../../components/error-message';
+import ErrorIndicator from '../../components/error-indicator/error-indicator';
 
 const SingleArticle = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { slug } = useParams();
 
-  const articleRequestStatus = useSelector($articleRequestStatus);
   const errorArticleServer = useSelector($errorArticleServer);
+  const articleRequestStatus = useSelector($articleRequestStatus);
   const singlePage = useSelector($singlePage);
+  const article = useSelector($singleArticle);
 
   useEffect(() => {
     dispatch(fetchSingleArticle(slug));
   }, [dispatch, slug]);
 
+  useEffect(() => {
+    if (errorArticleServer) {
+      toast.error('Something went wrong!');
+      dispatch(clearErrorArticleServer());
+    }
+  }, [errorArticleServer]);
+
   const goBack = () => navigate(-1, { replace: true });
 
-  const article = useSelector((state) => state.articles.singleArticle);
   return (
     <>
-      {articleRequestStatus === 'rejected' && <ErrorMessage serverError={errorArticleServer} />}
+      {articleRequestStatus === 'rejected' && <ErrorIndicator />}
       {articleRequestStatus === 'pending' && <Spinner />}
       {articleRequestStatus === 'fulfilled' && article && (
         <>

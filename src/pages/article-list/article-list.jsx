@@ -11,9 +11,9 @@ import {
 } from '../../store/slices/articleSlice';
 import { $offset, setOffset } from '../../store/slices/userSlice';
 import Spinner from '../../components/spinner';
-import ErrorMessage from '../../components/error-message';
 import ArticleCard from '../../components/article-card';
 import classes from './article-list.module.css';
+import ErrorIndicator from '../../components/error-indicator/error-indicator';
 
 function ArticleList() {
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ function ArticleList() {
 
   return (
     <>
-      {articleRequestStatus === 'rejected' && <ErrorMessage serverError={errorArticleServer} />}
+      {articleRequestStatus === 'rejected' && errorArticleServer && <ErrorIndicator />}
       {articleRequestStatus === 'pending' && <Spinner />}
       {articleRequestStatus === 'fulfilled' && (
         <>

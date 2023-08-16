@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Alert, Snackbar } from '@mui/material';
-import { resetUserError } from '../../store/slices/userSlice';
 
-function ErrorMessage({ serverError }) {
+import { Snackbar, Alert } from '@mui/material';
+import { resetUserError, $errorUserServer } from '../../store/slices/userSlice';
+
+function ErrorMessage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const errors = Object.entries(serverError.statusText);
+  const serverError = useSelector($errorUserServer);
 
   const [open, setOpen] = useState(true);
 
@@ -24,9 +25,12 @@ function ErrorMessage({ serverError }) {
   };
   return (
     <div>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar open={open} autoHideDuration={8000} onClose={handleClose}>
         <Alert severity="error" sx={{ width: '100%' }}>
-          {`${errors[0][0]}  ${errors[0][1]}`}
+          {serverError?.statusText?.email && `Email ${serverError?.statusText?.email} `}
+          {serverError?.statusText?.username && ` Username ${serverError?.statusText?.username}`}
+          {serverError?.statusText['email or password'] &&
+            ` email or password ${serverError?.statusText['email or password']}`}
         </Alert>
       </Snackbar>
     </div>

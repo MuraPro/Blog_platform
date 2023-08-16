@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { Box, Button, Container, Divider, Paper, TextField, Typography } from '@mui/material';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { nanoid } from 'nanoid';
-import { $disabled } from '../../store/slices/articleSlice';
 
 const ArticleForm = ({ article, handlerFormSubmit }) => {
-  const disabled = useSelector($disabled);
-
   const validationSchema = Yup.object().shape({
     title: Yup.string().required('Поле "Title" должно быть заполнено'),
     description: Yup.string().required('Поле "Short description" должно быть заполнено'),
@@ -121,7 +117,6 @@ const ArticleForm = ({ article, handlerFormSubmit }) => {
                 <TextField disabled id={item} value={item} size="small" sx={{ mr: 2 }} />
 
                 <Button
-                  disabled={disabled}
                   variant="outlined"
                   color="error"
                   sx={{
@@ -133,7 +128,6 @@ const ArticleForm = ({ article, handlerFormSubmit }) => {
               </Box>
             ))}
 
-          {/* поле создания тега */}
           <TextField
             id="tag"
             value={tagValue}
@@ -146,9 +140,7 @@ const ArticleForm = ({ article, handlerFormSubmit }) => {
               setTagValue(event.target.value);
             }}
           />
-
           <Button
-            disabled={disabled}
             variant="outlined"
             sx={{
               mb: 2,
@@ -159,7 +151,6 @@ const ArticleForm = ({ article, handlerFormSubmit }) => {
           </Button>
           <Divider sx={{ mb: 2 }} />
           <Button
-            disabled={disabled}
             type="submit"
             variant="contained"
             sx={{

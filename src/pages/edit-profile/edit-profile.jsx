@@ -9,9 +9,10 @@ import {
   $userRequestStatus,
   $errorUserServer,
   $userIsEdit,
+  resetUserError,
 } from '../../store/slices/userSlice';
 import RegForm from '../../components/reg-form';
-import ErrorMessage from '../../components/error-message';
+import ErrorIndicator from '../../components/error-indicator/error-indicator';
 
 const EditProfile = () => {
   const dispatch = useDispatch();
@@ -33,13 +34,20 @@ const EditProfile = () => {
     }
   }, [userRequestStatus, userIsEdit]);
 
+  useEffect(() => {
+    if (errorUserServer) {
+      toast.error('Users data not updated. Something went wrong!');
+      dispatch(resetUserError());
+    }
+  }, [errorUserServer]);
+
   const handlerFormSubmit = (data) => {
     dispatch(fetchUpdateUserProfile(data));
   };
 
   return (
     <>
-      {errorUserServer && <ErrorMessage serverError={errorUserServer} />}
+      {errorUserServer && <ErrorIndicator />}
       <RegForm user={user} handlerFormSubmit={handlerFormSubmit} />
     </>
   );

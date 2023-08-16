@@ -13,9 +13,8 @@ import {
   fetchSetFavoriteArticle,
   fetchDeleteFavoriteArticle,
   fetchDeleteArticle,
-  $disabled,
 } from '../../store/slices/articleSlice';
-import { $userLoggedIn } from '../../store/slices/userSlice';
+import { $userLoggedIn, $disabled } from '../../store/slices/userSlice';
 import avatar from '../../icons/avatar.png';
 import classes from './article-card.module.css';
 

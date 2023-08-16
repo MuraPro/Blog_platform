@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar } from '@mui/material';
-import { logOut, $userName, $userAvatar } from '../../store/slices/userSlice';
+import { logOut, $userName, $userAvatar, resetUserError } from '../../store/slices/userSlice';
 import { clearArticleRequestStatus } from '../../store/slices/articleSlice';
 import avatarPicture from '../../icons/avatar.png';
 import classes from './header.module.css';
@@ -21,6 +21,10 @@ const Header = () => {
     toast.info('You have logged out successfully');
   };
 
+  const handleReset = () => {
+    dispatch(resetUserError());
+  };
+
   return (
     <header>
       <div className={classes.header_container}>
@@ -32,11 +36,19 @@ const Header = () => {
 
         {!auth && (
           <div className={classes.signs}>
-            <Link to="/sign-in" style={{ textDecoration: 'none' }} className={classes.sign_in}>
+            <Link
+              to="/sign-in"
+              style={{ textDecoration: 'none' }}
+              className={classes.sign_in}
+              onClick={handleReset}>
               Sign In
             </Link>
 
-            <Link to="/sign-up" style={{ textDecoration: 'none' }} className={classes.sign_up}>
+            <Link
+              to="/sign-up"
+              style={{ textDecoration: 'none' }}
+              className={classes.sign_up}
+              onClick={handleReset}>
               Sign Up
             </Link>
           </div>

@@ -6,18 +6,15 @@ import {
   fetchCreateUser,
   setUserIsNotEdit,
   $userRequestStatus,
-  $errorUserServer,
   $userIsEdit,
 } from '../../store/slices/userSlice';
 import RegForm from '../../components/reg-form';
-import ErrorMessage from '../../components/error-message';
 
 const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const userRequestStatus = useSelector($userRequestStatus);
-  const errorUserServer = useSelector($errorUserServer);
   const userIsEdit = useSelector($userIsEdit);
 
   useEffect(() => {
@@ -34,7 +31,6 @@ const SignUp = () => {
 
   return (
     <>
-      {errorUserServer && <ErrorMessage serverError={errorUserServer} />}
       <RegForm signUp handlerFormSubmit={handlerFormSubmit} />
     </>
   );
