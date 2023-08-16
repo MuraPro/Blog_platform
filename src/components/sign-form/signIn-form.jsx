@@ -24,10 +24,10 @@ const SignInForm = ({ handleFormSubmit }) => {
   const errorMessage = errorUserServer?.statusText['email or password'];
 
   useEffect(() => {
+    dispatch(setUserRequestStatus());
     if (userRequestStatus === 'rejected') {
       toast.error(`email or password ${errorMessage}`);
       dispatch(enableButtons());
-      dispatch(setUserRequestStatus());
     }
   }, [userRequestStatus]);
 
