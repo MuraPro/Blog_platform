@@ -58,7 +58,7 @@ function ArticleCard(props) {
   };
 
   const redirectToList = () => {
-    navigate('/articles/', { replace: true });
+    navigate('/articles', { replace: true });
     setModalIsOpen(false);
   };
 

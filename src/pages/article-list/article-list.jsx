@@ -7,8 +7,7 @@ import {
   $articlesCount,
   $articleRequestStatus,
   $errorArticleServer,
-  //   $deletedArticleSlug,
-  clearArticleRequestStatus,
+  $articleIsDeleted,
 } from '../../store/slices/articleSlice';
 import { $offset, setOffset } from '../../store/slices/userSlice';
 import Spinner from '../../components/spinner';
@@ -23,11 +22,11 @@ function ArticleList() {
   const articleRequestStatus = useSelector($articleRequestStatus);
   const errorArticleServer = useSelector($errorArticleServer);
   const offset = useSelector($offset);
+  const articleIsDeleted = useSelector($articleIsDeleted);
 
   useEffect(() => {
     dispatch(fetchGetArticles({ limit: 3, offset }));
-    dispatch(clearArticleRequestStatus());
-  }, [offset]);
+  }, [offset, articleIsDeleted]);
 
   return (
     <>
