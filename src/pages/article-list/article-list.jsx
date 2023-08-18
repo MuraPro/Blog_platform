@@ -2,12 +2,14 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Pagination } from '@mui/material';
+
 import {
   fetchGetArticles,
   $articles,
   $articlesCount,
   $articleRequestStatus,
   $errorArticleServer,
+  $deletedArticleSlug,
 } from '../../store/slices/articleSlice';
 import { $offset, setOffset } from '../../store/slices/userSlice';
 import Spinner from '../../components/spinner';
@@ -25,14 +27,11 @@ function ArticleList() {
   const articleRequestStatus = useSelector($articleRequestStatus);
   const errorArticleServer = useSelector($errorArticleServer);
   const offset = useSelector($offset);
+  const deletedArticleSlug = useSelector($deletedArticleSlug);
 
   useEffect(() => {
     dispatch(fetchGetArticles({ limit: 5, offset }));
-  }, []);
-
-  useEffect(() => {
-    dispatch(fetchGetArticles({ limit: 5, offset }));
-  }, [offset, state]);
+  }, [offset, state, deletedArticleSlug]);
 
   return (
     <>

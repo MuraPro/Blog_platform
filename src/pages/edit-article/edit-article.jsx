@@ -1,11 +1,15 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {
-  fetchEditArticle,
-  fetchSingleArticle,
   $singleArticle,
+  $articleRequestStatus,
+  $errorArticleServer,
+  $articleIsCreated,
+  $singlePage,
+  fetchEditArticle,
+  setArticleIsCreated,
   clearErrorArticleServer,
 } from '../../store/slices/articleSlice';
 import ArticleForm from '../../components/article-form';
@@ -16,29 +20,24 @@ import ErrorIndicator from '../../components/error-indicator/error-indicator';
 const EditArticle = () => {
   const dispatch = useDispatch();
   const { slug } = useParams();
-  const article = useSelector($singleArticle);
-
   const navigate = useNavigate();
-  const location = useLocation();
-  const fromPage = location.state?.from?.pathname || '/';
 
-  const articleRequestStatus = useSelector((state) => state.articles.articleRequestStatus);
-  const errorArticleServer = useSelector((state) => state.articles.errorArticleServer);
-  const articleIsCreated = useSelector((state) => state.articles.articleIsCreated);
-
-  useEffect(() => {
-    dispatch(fetchSingleArticle(slug));
-  }, [dispatch, slug]);
+  const article = useSelector($singleArticle);
+  const articleRequestStatus = useSelector($articleRequestStatus);
+  const errorArticleServer = useSelector($errorArticleServer);
+  const singlePage = useSelector($singlePage);
+  const articleIsCreated = useSelector($articleIsCreated);
 
   useEffect(() => {
-    if (articleIsCreated === true) {
-      navigate(fromPage, { replace: true });
+    if (articleIsCreated) {
+      toast.success('Article has edited successfully!');
+      navigate(-1, { replace: true });
+      dispatch(setArticleIsCreated());
     }
   }, [articleIsCreated]);
 
   const handlerFormSubmit = ({ title, description, text: body }, tagList) => {
     dispatch(fetchEditArticle({ slug, title, description, body, tagList }));
-    toast.success('Article has edited successfully!');
   };
 
   useEffect(() => {
@@ -52,9 +51,9 @@ const EditArticle = () => {
     <>
       {articleRequestStatus === 'rejected' && errorArticleServer && <ErrorIndicator />}
       {articleRequestStatus === 'pending' && <Spinner />}
-      {articleRequestStatus === 'fulfilled' && article && (
+      {articleRequestStatus === 'fulfilled' && (
         <>
-          <ArticleForm article={article} handlerFormSubmit={handlerFormSubmit} />
+          {singlePage && <ArticleForm article={article} handlerFormSubmit={handlerFormSubmit} />}
           <ModalWindow />
         </>
       )}

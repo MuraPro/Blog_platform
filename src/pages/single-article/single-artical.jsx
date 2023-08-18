@@ -37,7 +37,7 @@ const SingleArticle = () => {
     }
   }, [errorArticleServer]);
 
-  const goBack = () => navigate(-1, { replace: true });
+  const goBack = () => navigate('/articles', { replace: true });
 
   return (
     <>
@@ -47,7 +47,7 @@ const SingleArticle = () => {
         <>
           <ArticleCard article={article} singlePage={singlePage} />
           <Chip
-            label="Go back"
+            label="Go List"
             variant="outlined"
             onClick={goBack}
             sx={{ background: 'white', alignSelf: 'flex-start' }}
