@@ -112,7 +112,7 @@ export const fetchEditArticle = createAsyncThunk(
 export const fetchDeleteArticle = createAsyncThunk(
   'articles/fetchDeleteArticle',
 
-  async (slug, { rejectWithValue }) => {
+  async ({ slug, redirectToList }, { rejectWithValue }) => {
     try {
       const res = await axios.delete(`https://blog.kata.academy/api/articles/${slug}`, {
         headers: {
@@ -123,6 +123,7 @@ export const fetchDeleteArticle = createAsyncThunk(
 
       const { article } = res.data;
 
+      redirectToList();
       return { slug, article };
     } catch (err) {
       return rejectWithValue({

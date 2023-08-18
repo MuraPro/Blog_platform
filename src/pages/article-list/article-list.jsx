@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Pagination } from '@mui/material';
-
 import {
   fetchGetArticles,
-  setArticleIsDeleted,
   $articles,
   $articlesCount,
   $articleRequestStatus,
   $errorArticleServer,
-  $articleIsDeleted,
+  //   $deletedArticleSlug,
   clearArticleRequestStatus,
 } from '../../store/slices/articleSlice';
 import { $offset, setOffset } from '../../store/slices/userSlice';
@@ -24,14 +22,12 @@ function ArticleList() {
   const articlesCount = useSelector($articlesCount);
   const articleRequestStatus = useSelector($articleRequestStatus);
   const errorArticleServer = useSelector($errorArticleServer);
-  const articleIsDeleted = useSelector($articleIsDeleted);
   const offset = useSelector($offset);
 
   useEffect(() => {
     dispatch(fetchGetArticles({ limit: 3, offset }));
-    dispatch(setArticleIsDeleted());
     dispatch(clearArticleRequestStatus());
-  }, [dispatch, offset, articleIsDeleted]);
+  }, [dispatch, offset]);
 
   return (
     <>

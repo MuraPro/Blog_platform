@@ -33,6 +33,7 @@ function ArticleCard(props) {
   const navigate = useNavigate();
 
   const { article, singlePage } = props;
+  const { slug } = article;
   const userCreatorArticle = article.author.username;
   const userLoggedIn = useSelector($userLoggedIn);
   const disabled = useSelector($disabled);
@@ -46,21 +47,24 @@ function ArticleCard(props) {
 
   const handleCheckboxClick = (event) => {
     if (event.target.checked) {
-      dispatch(fetchSetFavoriteArticle(article.slug));
+      dispatch(fetchSetFavoriteArticle(slug));
       setCheckFavorite(true);
       setFavoriteCount(favoriteCount + 1);
     } else {
-      dispatch(fetchDeleteFavoriteArticle(article.slug));
+      dispatch(fetchDeleteFavoriteArticle(slug));
       setCheckFavorite(false);
       setFavoriteCount(favoriteCount - 1);
     }
   };
 
-  const deleteArticle = () => {
-    dispatch(fetchDeleteArticle(article.slug));
-    toast.success('Article has deleted successfully!');
-    navigate('/articles', { replace: true });
+  const redirectToList = () => {
+    navigate('/articles/', { replace: true });
     setModalIsOpen(false);
+  };
+
+  const deleteArticle = () => {
+    dispatch(fetchDeleteArticle({ slug, redirectToList }));
+    toast.success('Article has deleted successfully!');
   };
 
   function validateStr(str) {
