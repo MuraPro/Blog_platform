@@ -233,7 +233,6 @@ const articleSlice = createSlice({
       .addCase(fetchDeleteFavoriteArticle.pending, () => {})
       .addCase(fetchGetArticles.fulfilled, (state, action) => {
         state.articles = [...action.payload.articles];
-        state.articles = state.articles.filter((i) => i.slug !== state.deletedArticleSlug);
         state.articlesCount = action.payload.articlesCount;
         state.deletedArticleSlug = '';
         state.articleRequestStatus = 'fulfilled';

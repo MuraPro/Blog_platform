@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Pagination } from '@mui/material';
 
@@ -9,7 +9,7 @@ import {
   $articlesCount,
   $articleRequestStatus,
   $errorArticleServer,
-  $deletedArticleSlug,
+  //   $deletedArticleSlug,
 } from '../../store/slices/articleSlice';
 import { $offset, setOffset } from '../../store/slices/userSlice';
 import Spinner from '../../components/spinner';
@@ -19,19 +19,19 @@ import ErrorIndicator from '../../components/error-indicator/error-indicator';
 
 function ArticleList() {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const { state } = location;
+  //   const location = useLocation();
+  //   const { state } = location;
 
   const articles = useSelector($articles);
   const articlesCount = useSelector($articlesCount);
   const articleRequestStatus = useSelector($articleRequestStatus);
   const errorArticleServer = useSelector($errorArticleServer);
   const offset = useSelector($offset);
-  const deletedArticleSlug = useSelector($deletedArticleSlug);
+  //   const deletedArticleSlug = useSelector($deletedArticleSlug);
 
   useEffect(() => {
-    dispatch(fetchGetArticles({ limit: 5, offset }));
-  }, [offset, state, deletedArticleSlug]);
+    dispatch(fetchGetArticles({ limit: 3, offset }));
+  }, [offset]);
 
   return (
     <>
