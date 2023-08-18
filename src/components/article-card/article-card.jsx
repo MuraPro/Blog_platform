@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { nanoid } from 'nanoid';
 import { Checkbox, Box, Button } from '@mui/material';
@@ -31,7 +31,6 @@ function verificationTag(item) {
 function ArticleCard(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const { article, singlePage } = props;
   const userCreatorArticle = article.author.username;
@@ -60,7 +59,7 @@ function ArticleCard(props) {
   const deleteArticle = () => {
     dispatch(fetchDeleteArticle(article.slug));
     toast.success('Article has deleted successfully!');
-    navigate('/articles', { replace: true, state: location.pathname });
+    navigate('/articles', { replace: true });
     setModalIsOpen(false);
   };
 

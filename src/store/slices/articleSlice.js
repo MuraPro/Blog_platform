@@ -202,6 +202,9 @@ const articleSlice = createSlice({
     setArticleIsCreated(state) {
       state.articleIsCreated = false;
     },
+    setArticleIsDeleted(state) {
+      state.articleIsDeleted = false;
+    },
   },
 
   extraReducers: (builder) => {
@@ -228,6 +231,7 @@ const articleSlice = createSlice({
       .addCase(fetchDeleteArticle.pending, (state) => {
         state.articleRequestStatus = 'pending';
         state.errorArticleServer = null;
+        state.articleIsDeleted = false;
       })
       .addCase(fetchSetFavoriteArticle.pending, () => {})
       .addCase(fetchDeleteFavoriteArticle.pending, () => {})
@@ -258,6 +262,7 @@ const articleSlice = createSlice({
       .addCase(fetchDeleteArticle.fulfilled, (state, action) => {
         state.articleRequestStatus = 'fulfilled';
         state.deletedArticleSlug = action.payload.slug;
+        state.articleIsDeleted = true;
         state.singleArticle = null;
         state.singlePage = false;
       })
@@ -284,6 +289,7 @@ const articleSlice = createSlice({
       .addCase(fetchDeleteArticle.rejected, (state, action) => {
         state.errorArticleServer = action.payload;
         state.articleRequestStatus = 'rejected';
+        state.articleIsDeleted = false;
       })
       .addCase(fetchSetFavoriteArticle.rejected, (state, action) => {
         state.errorArticleServer = action.payload;
@@ -303,6 +309,7 @@ export const $errorArticleServer = (state) => state.articles.errorArticleServer;
 export const $singlePage = (state) => state.articles.singlePage;
 export const $singleArticle = (state) => state.articles.singleArticle;
 export const $articleIsCreated = (state) => state.articles.articleIsCreated;
+export const $articleIsDeleted = (state) => state.articles.articleIsDeleted;
 export const $deletedArticleSlug = (state) => state.articles.deletedArticleSlug;
 
 // eslint-disable-next-line no-empty-pattern
@@ -311,6 +318,7 @@ const {
   clearSingleArticles,
   clearErrorArticleServer,
   setArticleIsCreated,
+  setArticleIsDeleted,
 } = articleSlice.actions;
 
 export {
@@ -318,6 +326,7 @@ export {
   clearSingleArticles,
   clearErrorArticleServer,
   setArticleIsCreated,
+  setArticleIsDeleted,
 };
 
 export default articleSlice.reducer;
