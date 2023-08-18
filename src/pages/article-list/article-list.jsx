@@ -27,7 +27,7 @@ function ArticleList() {
   useEffect(() => {
     dispatch(fetchGetArticles({ limit: 3, offset }));
     dispatch(clearArticleRequestStatus());
-  }, [dispatch, offset]);
+  }, [offset]);
 
   return (
     <>
