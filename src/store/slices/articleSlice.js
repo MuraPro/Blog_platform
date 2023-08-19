@@ -63,6 +63,7 @@ export const fetchCreateArticle = createAsyncThunk(
           },
         },
       );
+
       const { article } = res.data;
 
       return { article };
@@ -122,7 +123,6 @@ export const fetchDeleteArticle = createAsyncThunk(
       });
 
       const { article } = res.data;
-
       redirectToList();
       return { slug, article };
     } catch (err) {
@@ -187,6 +187,7 @@ const articleSlice = createSlice({
     articleRequestStatus: '',
     errorArticleServer: null,
     articleIsCreated: false,
+    articleIsGeted: false,
     articleIsDeleted: false,
     singlePage: false,
   },
@@ -205,6 +206,9 @@ const articleSlice = createSlice({
     },
     setArticleIsDeleted(state) {
       state.articleIsDeleted = false;
+    },
+    clearArticles(state) {
+      state.articles = [];
     },
   },
 
@@ -320,6 +324,7 @@ const {
   clearErrorArticleServer,
   setArticleIsCreated,
   setArticleIsDeleted,
+  clearArticles,
 } = articleSlice.actions;
 
 export {
@@ -328,6 +333,7 @@ export {
   clearErrorArticleServer,
   setArticleIsCreated,
   setArticleIsDeleted,
+  clearArticles,
 };
 
 export default articleSlice.reducer;

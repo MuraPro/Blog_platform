@@ -4,16 +4,19 @@
   margin: 0 auto;
   background-color: #ebeef3;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 main {
   max-width: 1440px;
   padding: 3px;
+  flex: 1 1 auto;
   margin: 0 auto;
 }
 
 section {
-  max-width: 950px;
+  width: 950px;
   min-height: 100vh;
   margin: 26px auto;
   display: flex;

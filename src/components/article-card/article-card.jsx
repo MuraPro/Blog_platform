@@ -13,6 +13,7 @@ import {
   fetchSetFavoriteArticle,
   fetchDeleteFavoriteArticle,
   fetchDeleteArticle,
+  clearArticles,
 } from '../../store/slices/articleSlice';
 import { $userLoggedIn, $disabled } from '../../store/slices/userSlice';
 import avatar from '../../icons/avatar.png';
@@ -22,10 +23,10 @@ function verificationTag(item) {
   if (item.length < 20) {
     return item;
   }
-  if (item.trim().length === 0) {
+  if (item.length === 0) {
     return 'Avatar';
   }
-  return null;
+  return 'Error';
 }
 
 function ArticleCard(props) {
@@ -58,13 +59,14 @@ function ArticleCard(props) {
   };
 
   const redirectToList = () => {
+    dispatch(clearArticles());
     navigate('/articles', { replace: true });
+    toast.success('Article has deleted successfully!');
     setModalIsOpen(false);
   };
 
   const deleteArticle = () => {
     dispatch(fetchDeleteArticle({ slug, redirectToList }));
-    toast.success('Article has deleted successfully!');
   };
 
   function validateStr(str) {

@@ -2,6 +2,11 @@
   width: 100%;
 }
 
+.section_list {
+  width: 100%;
+  min-height: 100vh;
+}
+
 .section_pagination {
   margin-top: 20px;
 }
